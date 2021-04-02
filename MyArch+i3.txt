@@ -1,0 +1,276 @@
+loadkeys us							раскладка клавиатуры
+lsblk								просмотр дерева дисков
+efivar -l
+efibootmgr( посмотрим старые записи, если они есть )
+gdisk(gpt) and fdisk(mbr)( or cfdisk)				программа разметки дисков
+
+iw dev
+iw def wlan0 scan | grep SSID
+iwctl --passphrase "password" station wlan0 connect SSID
+
+
+		UEFI	-----------------------------------------------------------------------
+
+	sda6	-	512mb	efi
+	sda7	-	4g	swap
+	sda8	-	20g	root
+	sda9	-	100g	home
+	sda5	-	wind
+
+	boot	-	512mb	ef00
+	swap	-	4gb	8200
+	root	-	20gb	8304
+	home	-	10gb	0700
+
+mkfs.vfat -F 32 /dev/sda6
+mkfs.ext4 /dev/sda8
+mkfs.ntfs -Q /dev/sda9
+mkswap /dev/sda7
+swapon /dev/sda7
+mount /dev/sda8 /mnt
+cd /mnt
+{		пока не монтрируем эти пути, загрузчик grub определяет загрузочные файлы по монтируемым файлам, и это мы сделаем позже
+mkdir boot/efi
+mount /dev/sda6 /mnt/boot/efi
+}
+mkdir home
+mount /dev/sda9 /mnt/home
+mkdir home/wind
+mount /dev/sda5 /mnt/home/wind
+vim /etc/pacman.d/mirrorlist		yy	p
+pacstrap -i /mnt base base-devel linux linux-firmware networkmanager vim ntfs-3g
+genfstab -U /mnt >> /mnt/etc/fstab {{ чтоб были примонтированы только диски /, /home, swap, и только нужное, загрузочный диск нам не нужен, мы его сможем потом вручную примонтировать и отредактировать}}
+arch-chroot /mnt
+echo "hostnamearchlinux" > /etc/hostname
+{{ проверяем время командой date, и оно UTC, и если мы поменяем его на localtime, то оно будет с ошибкой: 
+
+UTC - windows
+localtime - UNIX
+
+ln -sf /usr/share/zoneinfo/Asia/Yekaterinburg /etc/localtime
+hwclock --localtime --adjust
+}}
+vim /etc/locale.gen {{раскомментируем локали ru_RU, en_US UTF-8}}
+locale-gen
+echo 'LANG="en_US.UTF-8"' > /etc/locale.conf
+echo 'KEYMAP=us' >> /etc/vconsole.conf
+echo 'FONT=cyr-sun16' >> /etc/vconsole.conf
+mkinitcpio -p linux
+passwd
+pacman -S grub efibootmgr
+mkdir /boot/efi
+mount /dev/sda1 /boot/efi
+grub-install /dev/sdaX {{где X - это номер диска, если оно будет пустым, граб установится на любой доступный диск, в том числе и на загрузчик винды}}
+{		если будут смежные операционные системы
+pacman -S os-prober mtools fuse
+}
+grub-mkconfig -o /boot/grub/grub.cfg {{видит только примонтированные системы}}
+pacman -S wpa_supplicant
+exit
+umount -R /mnt
+reboot
+
+					В итоге ошибка решена после исправления последовательности 
+						монтирования диска загрузчика граб
+
+	login	>>>>	root
+systemctl enable NetworkManager
+systemctl start NetworkManager
+systemctl status NetworkManager
+nmtui 		--	wifi
+useradd -m -g users -G wheel -s /bin/bash <<itnova>>
+sudo /etc/sudoers					раскомментируем группу wheel для доступа к sudo
+
+	установка i3
+pacman -S
+ xorg-server
+ xorg-xev (для определения кода или символа клавиши)
+ xorg-xinit 
+ xorg-xinput 
+ xorg-drivers 
+ xorg-xbacklight
+ xorg-xrandr( arandr )
+ dmenu(rofi)
+ i3(i3-wm, i3-status)
+ ttf-dejavu
+ ttf-liberation
+ rxvt-unicode
+
+vim ~/.xinitrc		>>	exec i3
+startx				запускаем иксы
+
+ 
+ 
+ 
+	ЗВУК
+
+sudo gpasswd -a itnova audio				# добавляем пользователя в группу с доступом звука
+sudo pacman -S
+ pulseaudio
+ pulseaudio-alsa
+ alsa-utils	# устанавливает псевдооболочку
+ pavucontrol    # графическая оболочка для регулирования громкости динамиков и микрофона
+ alsamixer						# регулируем громкость
+
+	ЯРКОСТЬ ЭКРАНА
+sudo pacman -S xorg-xbacklight
+		xbacklight -set value =10
+		xbacklight -inc value +10
+		xbacklight -dec value -10
+
+	ДВА МОНИТОРА
+exec xrandr --output <<eDP1>> --mode 1366x768 --pos 0x0
+exec xrandr --output <<HDMI1>> --mode 1920x1080 --pox 1366x0
+exec xrandr --output HDMI1 --off
+
+	ОБОИ НА РАБОЧИЙ СТОЛ
+sudo pacman -S nitrogen
+exec --no-startup-id nitrogen (записать в конфиг i3)
+-----------------------------------------------------
+sudo pacman -S feh
+feh --bg-scale ~/Pictures/london.jpg
+
+
+	BLUETOOTH
+sudo pacman -S
+ bluez
+ bluez-utils
+ pulseaudio-bluetooth
+ blueman (графическая утилита, запускается в rofi blueman-applet, после чего в трее появится иконка блютуза)
+	sudo systemctl status bluetooth.service		# проверка статуса
+	sudo systemctl start bluetooth.service		# запуск
+	sudo systemctl enable bluetooth.service		# добавление в автозапуск службы блютуз
+
+	AUR repository
+git clone https://aur.archlinux.org/yay-bin.git
+cd yay-bin
+makepkg -si
+
+
+
+		Установка приложений
+sudo pacman -S
+dnsutils(для команды nslookup)
+traceroute(тут тоже все понятно)
+arandr(для легкой настройки двух мониторов)
+unzip(по логике вещей это элементарно)
+telegram-desktop(телеграм)
+firefox(браузер)
+chromium(браузер)
+pcmanfm(файловый менеджер)
+gvfs(для создания корзины для пкмэнфм)
+android-file-transfer(открывает файлы со смартфона) 
+vlc(видео проигрыватель)
+deadbeef(музыкальный проигрыватель)
+gpicview(просмотрщик изображений)
+flameshot(скриншоты) flameshot gui(в терминале, создать скриншот)
+git
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+			
+
+
+
+
+
+
+
+
+
+
+
+		BIOS
+
+	boot	-	500mb	83
+	swap	-	2gb	82
+	/	-	##gb	83
+-----	windows/ntfs/exfat	07	----- на всякий случай
+		(в конце разметки ставим "а" программой fdisk)
+
+mkfs.ext2 /dev/sda1 -L boot
+mkswap /dev/sda2 -L swap
+mkfs.ext4 /dev/sda3 -L root
+mkfs.ntfs -Q /dev/sda4 -L d
+
+mount /dev/sda3 /mnt		первым делом создаем корневую точку монтирования
+cd /mnt
+mkdir boot
+mount /dev/sda1 /mnt/boot
+mkdir d
+mount /dev/sda4 /mnt/d
+swapon /dev/sda2
+
+vim /etc/pacman.d/mirrorlist	?yandex
+				yy - копирует строчку
+				p - вставляет
+pacstrap -i /mnt base base-devel linux linux-firmware vim dhcpcd			# ключ -i значит что при установке будет спрашивать список пакетов из общего пакета
+
+		## у меня возникла проблема: "could not open file /mnt/var/lib/pacman/sync/core.db: Unrecognized archive format" и решение удалить папку с файлом rm -R /var/lib/pacman/sync/    and then pacman -Syuf
+
+genfstab -pU /mnt >> /mnt/etc/fstab
+arch-chroot /mnt
+echo "arch-pc" > /etc/hostname	имя компьютера
+ln -sf /usr/share/zoneinfo/Asia/Yekaterinburg /etc/localtime
+hwclock --systohc
+vim /etc/locale.gen	раскомментируем 3 ru-пакета и 2 en-пакета
+locale-gen
+vim /etc/locale.conf 	>> 	LANG="ru_RU.UTF-8"	язык системы
+vim /etc/vconsole.conf	>>	KEYMAP=ru
+				FONT=cyr-sun16 
+pacman-key --init		подписываем каждый репозиторий чтобы хакеры не смогли подменить нам пакеты
+pacman-key --populate archlinux
+pacman -Syu
+mkinitcpio -p linux
+passwd
+pacman -S grub
+grub-install /dev/sda
+pacman -S os-prober mtools fuse		если будет несколько ОС
+grub-mkconfig -o /boot/grub/grub.cfg	обновление конфига
+exit
+reboot
+
+		Установка i3
+useradd -m -g users -G wheel -s /bin/bash itnova
+passwd @somepassword@
+pacman -S xorg-server xorg-drivers xorg-fonts xorg-xinit xterm dmenu i3 ttf-dejavu
+vim /etc/sudoers и расскоментируем один файл, либо под root(цветным шрифтом) вписать нового пользователя для большей безопасности, почти сделать копию
+exit >> itnova >> pass
+sudo vim /etc/sudoers	если откроет файл, то все ок
+vim .xinitrc	>>	exec i3				в директории пользователя
+.Xresources
+startx
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

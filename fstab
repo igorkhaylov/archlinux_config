@@ -1,0 +1,13 @@
+# Static information about the filesystems.
+# See fstab(5) for details.
+
+# <file system> <dir> <type> <options> <dump> <pass>
+# /dev/sdb7
+UUID=e5e7ae80-37de-41e6-bb3e-783c26185b42	/         	ext4      	rw,relatime,discard	0 1
+
+# /dev/sdb6
+UUID=9248bf98-0d59-48ad-852b-194f0338c87a	none      	swap      	defaults,noatime,discard  	0 0
+
+
+/dev/sda1					/mnt/windiskd	ntfs-3g		defaults		0 0
+
