@@ -2,12 +2,16 @@
 # See fstab(5) for details.
 
 # <file system> <dir> <type> <options> <dump> <pass>
+# /dev/sdb4
+UUID=7414c545-59c8-41eb-9346-df67e30c00cf	/         	ext4      	rw,relatime	0 1
+
+# /dev/sdb5
+UUID=a96054a2-7312-4ad8-88b4-e877f4aad9fa	/home     	ext4      	rw,relatime	0 2
+
 # /dev/sdb7
-UUID=e5e7ae80-37de-41e6-bb3e-783c26185b42	/         	ext4      	rw,relatime,discard	0 1
+UUID=708daea3-9b92-4aec-bd03-92c7a37c3098	none      	swap      	defaults  	0 0
 
-# /dev/sdb6
-UUID=9248bf98-0d59-48ad-852b-194f0338c87a	none      	swap      	defaults,noatime,discard  	0 0
+# /dev/sda1					/mnt/d		ntfs-3g		defaults	0 0
 
 
-/dev/sda1					/mnt/windiskd	ntfs-3g		defaults		0 0
-
+/dev/sda1					/mnt/d		ntfs-3g		uid=igorkhaylov,gid=users,dmask=022,fmask=133	0 0

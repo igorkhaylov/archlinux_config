@@ -48,7 +48,7 @@ UTC - windows
 localtime - UNIX
 
 ln -sf /usr/share/zoneinfo/Asia/Yekaterinburg /etc/localtime
-hwclock --localtime --adjust
+# hwclock --localtime --adjust		( эту строчку не нужно прописывать, по умолчанию UTC стоит и этого достаточно, время отлично работает )
 }}
 vim /etc/locale.gen {{раскомментируем локали ru_RU, en_US UTF-8}}
 locale-gen
@@ -65,7 +65,7 @@ grub-install /dev/sdaX {{где X - это номер диска, если он�
 pacman -S os-prober mtools fuse
 }
 grub-mkconfig -o /boot/grub/grub.cfg {{видит только примонтированные системы}}
-pacman -S wpa_supplicant
+# pacman -S wpa_supplicant 		этот пакет не нужек к установке
 exit
 umount -R /mnt
 reboot
@@ -148,6 +148,7 @@ makepkg -si
 
 
 
+
 		Установка приложений
 sudo pacman -S
 dnsutils(для команды nslookup)
@@ -158,13 +159,25 @@ telegram-desktop(телеграм)
 firefox(браузер)
 chromium(браузер)
 pcmanfm(файловый менеджер)
-gvfs(для создания корзины для пкмэнфм)
-android-file-transfer(открывает файлы со смартфона) 
+gvfs(для создания корзины для pcmanfm)
+gvfs-smb(для сетевых ресурсов pcmanfm)
+android-file-transfer(открывает файлы со смартфона в pcmanfm) 
 vlc(видео проигрыватель)
 deadbeef(музыкальный проигрыватель)
 gpicview(просмотрщик изображений)
 flameshot(скриншоты) flameshot gui(в терминале, создать скриншот)
+youtube-dl
 git
+openssh
+	git config --global user.name "igorkhaylov"
+	git config --global(--local) user.email "sonikry.99@gmail.com"
+	ssh-keygen -o
+	eval $(ssh-agent -s)
+	ssh-add ~/.ssh/id_rsa
+freerdp(протокол для remmina)
+remmina(клиент для rdp)
+leafpad(блокнот с графическим интерфейсом)
+libreoffice-still(стабильная версия)
 
 
 
