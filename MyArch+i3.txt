@@ -90,10 +90,14 @@ pacman -S
  xorg-drivers 
  xorg-xbacklight
  xorg-xrandr( arandr )
+ xclip
  dmenu(rofi)
  i3(i3-wm, i3-status)
  ttf-dejavu
  ttf-liberation
+ ttf-font-awesome	(црифтовые иконки)
+ sbxkb			(значок языка в трее)
+ volumeicon		(значок громкости в трее)
  rxvt-unicode
 
 vim ~/.xinitrc		>>	exec i3
@@ -166,8 +170,8 @@ vlc(видео проигрыватель)
 deadbeef(музыкальный проигрыватель)
 gpicview(просмотрщик изображений)
 flameshot(скриншоты) flameshot gui(в терминале, создать скриншот)
-youtube-dl
 git
+	cat id_rsa.pub | xclip -selection clipboard
 openssh
 	git config --global user.name "igorkhaylov"
 	git config --global(--local) user.email "sonikry.99@gmail.com"
@@ -182,6 +186,10 @@ libreoffice-still(стабильная версия)
 
 
 
+youtube-dl(консольная утилита для скачивания видео из youtube)
+	youtube-dl -r 100K <URL>	(скачивание с ограничением 100Кбайт/сек)
+	youtube-dl -F <URL>		(просмотр всех форматов видео для скачивания)
+	youtube-dl -f 123 <URL>		(скачивание в выбраном качестве)
 
 
 
