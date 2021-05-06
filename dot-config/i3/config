@@ -34,11 +34,17 @@ exec --no-startup-id nm-applet
 
 
 # Use pactl to adjust volume in PulseAudio.
-set $refresh_i3status killall -SIGUSR1 i3status
-bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
-bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
+#set $refresh_i3status killall -SIGUSR1 i3status
+#bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
+#bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
+#bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
+#bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
+
+# Use amixer to adjust volume in PulseAudio
+bindsym XF86AudioLowerVolume exec --no-startup-id amixer sset Master 1%- && $refresh_i3status
+bindsym XF86AudioRaiseVolume exec --no-startup-id amixer sset Master 1%+ && $refresh_i3status
 bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
-bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
+#bindsym XF86AudioMute exec --no-startup-id amixer sset Master,0 toggle && $refresh_i3status
 
 
 
@@ -190,6 +196,17 @@ bar {
 }
 
 
+# добавляет окно в scratchpad
+bindsym $mod+Shift+grave move scratchpad
+# показывает, сворачивает окно в scratchpad
+bindsym $mod+grave scratchpad show
+# это синтаксис клавиш по нажатию открывает и скрывает заданное приложение в scratchpad
+# bindsym $mod+F1 [class="^TelegramDesktop$"] scratchpad show
+# bindsym $mod+F2 [class="^Keepassx$"] scratchpad show
+# bindsym $mod+F1 [class="^TelegramDesktop$"] scratchpad show
+
+
+
 
 
 
@@ -199,12 +216,15 @@ bar {
 
 bindsym $mod+d exec --no-startup-id rofi -theme lb by Qball -font "hack 10" -show run
 
+
+
 # Set the wallpaper(nitrogen) and use the animation(picom) compton
 # exec --no-startup-id nitrogen --restore; sleep1; compton -b
 #exec sleep1; compton
 
 # Set the wallpaper(feh)
 exec_always --no-startup-id feh --bg-scale ~/pictures/virshem_germaniya_zamok_vecher_nebo.jpg
+#exec --no-startup-id telegram-desktop
 
 #Use xbacklight -set
 bindsym XF86MonBrightnessUp exec --no-startup-id xbacklight -inc 10
@@ -217,6 +237,7 @@ bindsym $mod+z exec i3lock -c 000000
 # bindsym $mod+z exec slock
 
 bindsym Print exec "flameshot gui"
+
 
 exec flameshot
 #exec sbxkb &
