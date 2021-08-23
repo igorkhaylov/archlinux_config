@@ -1,0 +1,16 @@
+// распаковка в текущую директорию
+unzip archieve.zip
+
+// распаковка в указанную директорию
+unzip archieve.zip -d /path-to-extract
+
+// распаковка в текущую директорию
+unrar x archieve.rar
+
+// распаковка в указанную директорию
+unrar x archieve.rar /path-to-extract
+
+// запаковка файлов
+zip <output_file.zip> <input_file1> <input_file2>
+
+

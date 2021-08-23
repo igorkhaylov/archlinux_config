@@ -95,7 +95,7 @@ pacman -S
  i3(i3-wm, i3-status)
  ttf-dejavu
  ttf-liberation
- ttf-font-awesome	(црифтовые иконки)
+ ttf-font-awesome	(цифровые иконки)
  sbxkb			(значок языка в трее)
  volumeicon		(значок громкости в трее)
  rxvt-unicode
@@ -159,6 +159,8 @@ dnsutils(для команды nslookup)
 traceroute(тут тоже все понятно)
 arandr(для легкой настройки двух мониторов)
 unzip(по логике вещей это элементарно)
+ark(аналог WinRar)
+evince(Document Viewer PDF)
 telegram-desktop(телеграм)
 firefox(браузер)
 chromium(браузер)
@@ -184,6 +186,7 @@ freerdp(протокол для remmina)
 remmina(клиент для rdp)
 leafpad(блокнот с графическим интерфейсом)
 libreoffice-still(стабильная версия)
+
 
 
 
