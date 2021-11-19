@@ -204,7 +204,7 @@ bindsym $mod+grave scratchpad show
 # bindsym $mod+F1 [class="^TelegramDesktop$"] scratchpad show
 # bindsym $mod+F2 [class="^Keepassx$"] scratchpad show
 # bindsym $mod+F1 [class="^TelegramDesktop$"] scratchpad show
-
+# bindsym $mod+grave [class="^audacious$"] scratchpad show
 
 
 
@@ -223,7 +223,8 @@ bindsym $mod+d exec --no-startup-id rofi -theme lb by Qball -font "hack 10" -sho
 #exec sleep1; compton
 
 # Set the wallpaper(feh)
-exec_always --no-startup-id feh --bg-scale ~/pictures/virshem_germaniya_zamok_vecher_nebo.jpg
+# exec_always --no-startup-id feh --bg-scale ~/pictures/virshem_germaniya_zamok_vecher_nebo.jpg
+exec_always --no-startup-id feh --bg-scale ~/pictures/archlinux_desktop.png
 #exec --no-startup-id telegram-desktop
 
 #Use xbacklight -set
@@ -234,6 +235,9 @@ bindsym XF86MonBrightnessDown exec --no-startup-id xbacklight -dec 10
 
 # bindsym $mod+minus exec i3lock -c 000000
 bindsym $mod+z exec i3lock -c 000000
+bindsym $mod+x exec i3lock -c 000000 & exec systemctl suspend
+# bindsym $mod+x exec i3lock -c 000000 & exec systemctl hibernate
+# bindsym $mod+x exec systemctl suspend
 # bindsym $mod+z exec slock
 
 bindsym Print exec "flameshot gui"
