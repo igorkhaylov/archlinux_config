@@ -63,6 +63,8 @@ mount /dev/sda1 /boot/efi
 grub-install /dev/sdaX {{где X - это номер диска, если оно будет пустым, граб установится на любой доступный диск, в том числе и на загрузчик винды}}
 {		если будут смежные операционные системы
 pacman -S os-prober mtools fuse
+etc-default-grub добавить строчку GRUB_DISABLE_OS_PROBER=false 
+# чтоб добавилась система windows в загрузчик grub. os-prober - показывает системы
 }
 grub-mkconfig -o /boot/grub/grub.cfg {{видит только примонтированные системы}}
 # pacman -S wpa_supplicant 		этот пакет не нужек к установке
