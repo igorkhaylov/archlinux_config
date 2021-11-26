@@ -94,7 +94,7 @@ pacman -S
  xorg-xrandr( arandr )
  xclip
  dmenu(rofi)
- i3(i3-wm, i3-status)
+ i3(i3-wm, i3-status, i3lock)
  ttf-dejavu
  ttf-liberation
  ttf-font-awesome	(цифровые иконки)
