@@ -44,8 +44,8 @@ arch-chroot /mnt
 echo "hostnamearchlinux" > /etc/hostname
 {{ проверяем время командой date, и оно UTC, и если мы поменяем его на localtime, то оно будет с ошибкой: 
 
-UTC - windows
-localtime - UNIX
+UTC - UNIX
+localtime - windows
 
 ln -sf /usr/share/zoneinfo/Asia/Yekaterinburg /etc/localtime
 # hwclock --localtime --adjust		( эту строчку не нужно прописывать, по умолчанию UTC стоит и этого достаточно, время отлично работает )
@@ -181,14 +181,25 @@ git
 	cat id_rsa.pub | xclip -selection clipboard
 openssh
 	git config --global user.name "igorkhaylov"
-	git config --global(--local) user.email "sonikry.99@gmail.com"
+	git config --global(--local) user.email "igorkhaylov@yandex.com"
 	ssh-keygen -o
 	eval $(ssh-agent -s)
 	ssh-add ~/.ssh/id_rsa
+pass(password manager)
 freerdp(протокол для remmina)
 remmina(клиент для rdp)
 leafpad(блокнот с графическим интерфейсом)
 libreoffice-still(стабильная версия)
+
+
+
+# ssh for password-store app IOS
+ssh-keygen -t rsa -b 2046 -m PEM -f ./secret.key	# ssh gen for iphone
+git@github.com:igorkhaylov/passwordstore.git		# add github url to passwordstore app
+username git 						# git
+
+
+
 
 
 
