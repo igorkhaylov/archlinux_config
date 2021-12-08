@@ -87,6 +87,7 @@ sudo /etc/sudoers					раскомментируем группу wheel для �
 pacman -S
  xorg-server
  xorg-xev (для определения кода или символа клавиши)
+ xev | grep -A2 --line-buffered '^KeyRelease' | sed -n '/keycode /s/^.*keycode \([0-9]*\).* (.*, \(.*\)).*$/\1 \2/p'
  xorg-xinit 
  xorg-xinput 
  xorg-drivers 
