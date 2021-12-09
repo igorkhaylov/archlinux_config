@@ -199,6 +199,22 @@ ssh-keygen -t rsa -b 2046 -m PEM -f ./secret.key	# ssh gen for iphone
 git@github.com:igorkhaylov/passwordstore.git		# add github url to passwordstore app
 username git 						# git
 
+	GPG commands
+gpg --full-generate-key # задаем RSA 4096 - мощный вид шифрования
+gpg --expert --edit-key # key 1 выбираем subkey для изменения, expire - изменение даты,
+gpg --export-secret-subkey -a > secret_sub_key.gpg
+gpg --export-secret-key -a > secret_key.gpg
+gpg --export -a > public_key.gpg.pub
+gpg --import correct_key.gpg...
+gpg --delete-key (or --delete-secret-keys) your_name_key
+
+
+
+
+
+
+
+
 
 
 
