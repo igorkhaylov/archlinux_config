@@ -206,7 +206,8 @@ gpg --export-secret-subkey -a > secret_sub_key.gpg
 gpg --export-secret-key -a > secret_key.gpg
 gpg --export -a > public_key.gpg.pub
 gpg --import correct_key.gpg...
-gpg --delete-key (or --delete-secret-keys) your_name_key
+gpg --delete-key (or --delete-secret-keys) your_name_key # можно удалить только секретный ключ, в окошке подтверждения не подтверждаем secret subkey
+
 
 
 
