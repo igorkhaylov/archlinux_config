@@ -208,6 +208,18 @@ gpg --export -a > public_key.gpg.pub
 gpg --import correct_key.gpg...
 gpg --delete-key (or --delete-secret-keys) your_name_key # можно удалить только секретный ключ, в окошке подтверждения не подтверждаем secret subkey
 
+GNUPG хранит базу данных доверия ~/.gnupg/trustdb.gpg
+Вы можете сделать резервную копию этой базы данных доверия, используя --export-ownertrustопцию:
+gpg --export-ownertrust > file.txt
+Если вы экспортировали свои секретные ключи и импортировали их позже в новую среду, доверенной базы данных больше не будет.
+Тем не менее, это легко исправить:
+gpg --edit-key user@useremail.com
+gpg> trust
+.....
+Your decision? 5
+.....
+gpg> save
+
 
 
 
