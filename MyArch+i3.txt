@@ -196,7 +196,10 @@ libreoffice-still(стабильная версия)
 
 # ssh for password-store app IOS
 ssh-keygen -t rsa -b 2046 -m PEM -f ./secret.key	# ssh gen for iphone
+# or
+ssh-keygen -t ecdsa -b 256 -m PEM -f ./secret.key	# ssh gen for iphone
 git@github.com:igorkhaylov/passwordstore.git		# add github url to passwordstore app
+
 username git 						# git
 
 	GPG commands
