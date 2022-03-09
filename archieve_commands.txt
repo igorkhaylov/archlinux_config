@@ -13,6 +13,7 @@ unrar x archieve.rar /path-to-extract
 // запаковка файлов
 zip <output_file.zip> <input_file1> <input_file2>
 
+// запаковка файлов
 tar -cf filename.tar directory_name/
 
 
