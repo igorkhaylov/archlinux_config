@@ -191,6 +191,8 @@ freerdp(протокол для remmina)
 remmina(клиент для rdp)
 leafpad(блокнот с графическим интерфейсом)
 libreoffice-still(стабильная версия)
+xdg-utils (утилита для управления, установка браузера по умолчанию)
+	xdg-settings set default-web-browser firefox.desktop
 
 
 
