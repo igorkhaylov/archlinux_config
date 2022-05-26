@@ -38,7 +38,7 @@ mount /dev/sda9 /mnt/home
 mkdir home/wind
 mount /dev/sda5 /mnt/home/wind
 vim /etc/pacman.d/mirrorlist		yy	p
-pacstrap -i /mnt base base-devel linux linux-firmware networkmanager vim ntfs-3g
+pacstrap -i /mnt base base-devel linux linux-firmware networkmanager vim ntfs-3g usbutils
 genfstab -U /mnt >> /mnt/etc/fstab {{ чтоб были примонтированы только диски /, /home, swap, и только нужное, загрузочный диск нам не нужен, мы его сможем потом вручную примонтировать и отредактировать}}
 arch-chroot /mnt
 echo "hostnamearchlinux" > /etc/hostname
