@@ -225,6 +225,13 @@ Your decision? 5
 .....
 gpg> save
 
+PASS
+git clone git@github.com:igorkhaylov/passwordstore.git
+mv passwordstore .password-store
+pass init password-store/igorkhaylov@yanex.com 	(name/email of gpg key)
+
+
+
 
 
 
