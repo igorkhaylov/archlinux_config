@@ -5,7 +5,7 @@ efibootmgr( посмотрим старые записи, если они ест
 gdisk(gpt) and fdisk(mbr)( or cfdisk)				программа разметки дисков
 
 iw dev
-iw def wlan0 scan | grep SSID
+iw dev wlan0 scan | grep SSID
 iwctl --passphrase "password" station wlan0 connect SSID
 
 
