@@ -1,0 +1,9 @@
+sudo pacman -S openssh
+
+sudo systemctl start sshd
+
+# to send file
+scp file_name itnova@192.168.5.23:/home/itnova/tmp
+
+# if you want to send directory
+scp -r dir_name/ itnova@192.168.5.23:/home/tinova/tmp
