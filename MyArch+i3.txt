@@ -42,6 +42,7 @@ pacstrap -i /mnt base base-devel linux linux-firmware networkmanager vim ntfs-3g
 genfstab -U /mnt >> /mnt/etc/fstab {{ чтоб были примонтированы только диски /, /home, swap, и только нужное, загрузочный диск нам не нужен, мы его сможем потом вручную примонтировать и отредактировать}}
 arch-chroot /mnt
 echo "hostnamearchlinux" > /etc/hostname
+
 {{ проверяем время командой date, и оно UTC, и если мы поменяем его на localtime, то оно будет с ошибкой: 
 
 UTC - UNIX
@@ -50,6 +51,12 @@ localtime - windows
 ln -sf /usr/share/zoneinfo/Asia/Yekaterinburg /etc/localtime
 # hwclock --localtime --adjust		( эту строчку не нужно прописывать, по умолчанию UTC стоит и этого достаточно, время отлично работает )
 }}
+
+timedatectl set-ntp true
+hwclock --systohc				setting up hardware clock from ntp server
+timedatectl set-local-rtc 0			setting up UTC
+timedatectl set-timezone Asia/Yekaterinburg	setting up UTC+5
+
 vim /etc/locale.gen {{раскомментируем локали ru_RU, en_US UTF-8}}
 locale-gen
 echo 'LANG="en_US.UTF-8"' > /etc/locale.conf
