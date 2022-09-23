@@ -13,3 +13,4 @@ sudo ufw enable
 sudo ufw reload
 ssh user_name@remote_host:22
 
+ssh-keygen -R itnova.uz
