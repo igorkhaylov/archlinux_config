@@ -1,0 +1,6 @@
+sudo pacman -S openssh-server
+sudo systemctl status ssh
+sudo ufw allow ssh
+sudo ufw enable
+sudo ufw reload
+ssh user_name@remote_host:22
