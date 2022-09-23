@@ -1,0 +1,65 @@
+Create index.html files
+
+For the next step, create index.html files for each of the domains. Starting with the example1 website, add the following command.
+
+$ sudo vim /var/www/html/example1.com/index.html
+
+<title>www.example1.com</title>
+<h1>Welcome to www.example1.com Website</h1>
+</html>
+
+Save and close the file to save the changes.
+
+Repeat the same steps, for example2.com website
+
+
+
+Open NGINX Configuration file
+
+Open the NGINX configuration file at /etc/nginx/nginx.conf You can do it using this command:
+
+$ sudo vi /etc/nginx/nginx.conf
+
+
+
+Create Server Blocks
+
+Create two server blocks for each domain.
+
+You can modify the values for server_name and root. It lets you add specific domain names. Also, add the document root locations for each domain.
+
+http {
+
+	listen 80;
+	   root /var/www/html/example1.com;
+	   index index.html;
+	   server_name example1.com;
+
+	   location / {
+	       try_files $uri $uri/ =404;
+	   }
+
+	server {
+	   listen 80;
+	   root /var/www/html/example2.com;
+	   index index.html;
+	   server_name example2.com;
+	   location / {
+	       try_files $uri $uri/ =404;
+	   }
+
+	}
+}
+
+
+
+Restart the NGINX Server
+
+Restart the NGINX server to apply the changes. Use the following command:
+
+$ sudo nginx -t 
+$ sudo systemctl restart nginx
+
+Check the web browser & type example1.com to see the index page. Test the same changes, for example2.com domain.
+
+You have configured two virtual hosts on one server using NGINX.
