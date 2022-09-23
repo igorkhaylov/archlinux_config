@@ -1,6 +1,15 @@
-sudo pacman -S openssh-server
+https://www.tutsmake.com/how-to-enable-ssh-on-ubuntu-22-04/
+# on ubuntu
+
+	install openssh
+sudo apt install openssh-server
+
+	check status of ssh
 sudo systemctl status ssh
+
+	allow connection
 sudo ufw allow ssh
 sudo ufw enable
 sudo ufw reload
 ssh user_name@remote_host:22
+
