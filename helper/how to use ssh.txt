@@ -1,3 +1,11 @@
+  # from MyArch
+ssh-keygen -o
+eval $(ssh-agent -s)
+ssh-add ~/.ssh/id_rsa
+
+
+
+
 https://www.tutsmake.com/how-to-enable-ssh-on-ubuntu-22-04/
 # on ubuntu
 
@@ -11,7 +19,7 @@ sudo systemctl status ssh
 sudo ufw allow ssh
 sudo ufw enable
 sudo ufw reload
-ssh user_name@remote_host:22
+ssh user_name@remote_host -p 22
 
 ssh-keygen -R itnova.uz
 
