@@ -252,9 +252,5 @@ exec flameshot
 
 #exec_always --no-startup-id sbxkb &
 
-
-
-
-
-
+exec --no-startup-id ~/.screenlayout/hdmi-left.sh
 

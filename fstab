@@ -14,4 +14,4 @@ UUID=708daea3-9b92-4aec-bd03-92c7a37c3098	none      	swap      	defaults  	0 0
 # /dev/sda1					/mnt/d		ntfs-3g		defaults	0 0
 
 
-/dev/sda1					/mnt/d		ntfs-3g		uid=igorkhaylov,gid=users,dmask=022,fmask=133	0 0
+/dev/sda1					/mnt/d		ntfs-3g		uid=user,gid=users,dmask=022,fmask=133	0 0
