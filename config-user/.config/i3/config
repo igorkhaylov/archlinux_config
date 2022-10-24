@@ -223,8 +223,8 @@ bindsym $mod+d exec --no-startup-id rofi -theme lb by Qball -font "hack 10" -sho
 #exec sleep1; compton
 
 # Set the wallpaper(feh)
-# exec_always --no-startup-id feh --bg-scale ~/pictures/virshem_germaniya_zamok_vecher_nebo.jpg
-exec_always --no-startup-id feh --bg-scale ~/pictures/archlinux_desktop.png
+# exec_always --no-startup-id feh --bg-scale ~/pictures/archlinux_desktop.png
+exec_always --no-startup-id feh --bg-scale ~/pictures/arch-journey.png
 #exec --no-startup-id telegram-desktop
 
 #Use xbacklight -set
