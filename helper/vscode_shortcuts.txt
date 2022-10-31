@@ -1,0 +1,12 @@
+----------------------------------------+------------------------------------------------------------
+	Shortcuts			|		Description
+----------------------------------------+------------------------------------------------------------
+Ctrl+p or Ctrl+e 			| 	Search for file
+Ctrl+Shift+f				|	Find in files
+Ctrl+f					|	Search in a file
+Ctrl+`					|	Toggle Terminal
+Ctrl+Shift+`				|	Create new Terminal
+Ctrl+Shift+e				|	Show Explorer
+Ctrl+b					|	Show/Hide Primary Side Bar
+Ctrl+Shift+p				|	Show All Commands
+
