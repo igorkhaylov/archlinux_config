@@ -6,4 +6,7 @@ sudo systemctl start sshd
 scp file_name itnova@192.168.5.23:/home/itnova/tmp
 
 # if you want to send directory
-scp -r dir_name/ itnova@192.168.5.23:/home/tinova/tmp
+scp -r dir_name/ itnova@192.168.5.23:/home/itnova/tmp
+
+# share data with another port
+scp -P 7667 id_rsa.pub itnova@192.168.5.23:/home/itnova/tmp
