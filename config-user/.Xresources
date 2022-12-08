@@ -9,7 +9,7 @@ Xft*dpi:       			96
 Xft*antialias: 			True
 Xft*hinting:   			Full
 URxvt.perl-ext-common: 		clipboard
-iURxvt.clipboard.autocopy:	true
+URxvt.clipboard.autocopy:	true
 URxvt.url-launcher: 		/usr/bin/xdg-open
 URxvt.matcher.button: 		1
 URxvt.colorUL: 			#4682B4
@@ -18,3 +18,13 @@ URxvt.keysym.Shift-Control-C: eval:selection_to_clipboard
 URxvt.iso14755: false
 URxvt.iso14755_52: false
 
+
+xterm*background:   #1F1D00
+xterm*foreground:   #DEDEDE
+XTerm*renderFont: true
+XTerm*faceName: VeraMono
+XTerm*faceSize: 9
+
+xterm*VT100.Translations: #override \
+                 Ctrl Shift <Key>V:    insert-selection(SELECT) \n\
+                 Ctrl Shift <Key>C:    copy-selection(SELECT)
