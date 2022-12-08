@@ -24,6 +24,7 @@ iwctl --passphrase "password" station wlan0 connect SSID
 
 mkfs.vfat -F 32 /dev/sda6
 mkfs.ext4 /dev/sda8
+mkfs.btrfs /dev/sdb_vg/volume1
 mkfs.ntfs -Q /dev/sda9
 mkswap /dev/sda7
 swapon /dev/sda7
