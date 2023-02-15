@@ -252,5 +252,10 @@ exec flameshot
 
 #exec_always --no-startup-id sbxkb &
 
-exec --no-startup-id ~/.screenlayout/hdmi-left.sh
+#exec --no-startup-id ~/.screenlayout/hdmi-left.sh
+
+
+xrandr --newmode "1920x1200_60.00"  193.25  1920 2056 2256 2592  1200 1203 1209 1245 -hsync +vsync
+xrandr --addmode eDP1 1920x1200_60.00
+exec --no-startup-id ~/.screenlayout/set_screen_layout_dp_lenovo.sh
 
