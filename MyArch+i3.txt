@@ -6,6 +6,7 @@ gdisk(gpt) and fdisk(mbr)( or cfdisk)				программа разметки д�
 
 iw dev
 iw dev wlan0 scan | grep SSID
+iwctl station list
 iwctl --passphrase "password" station wlan0 connect SSID
 
 
