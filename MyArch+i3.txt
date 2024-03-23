@@ -162,6 +162,17 @@ git clone https://aur.archlinux.org/yay-bin.git
 cd yay-bin
 makepkg -si
 
+# Remove yay for update 
+sudo pacman -R yay
+# Install yay from git
+cd /tmp
+git clone https://aur.archlinux.org/yay-bin.git
+cd yay-bin
+makepkg -si
+cd ..
+# clean /tmp folder
+rm -rf yay-bin
+
 
 
 
