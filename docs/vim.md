@@ -1,3 +1,6 @@
+# Vim: базовые команды
+
+```
 # to save file to another directory 
 :w /new_path_to_file
-
+```

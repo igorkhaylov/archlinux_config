@@ -1,3 +1,6 @@
+# Горячие клавиши VS Code
+
+```
 ----------------------------------------+------------------------------------------------------------
 	Shortcuts			|		Description
 ----------------------------------------+------------------------------------------------------------
@@ -9,4 +12,4 @@ Ctrl+Shift+`				|	Create new Terminal
 Ctrl+Shift+e				|	Show Explorer
 Ctrl+b					|	Show/Hide Primary Side Bar
 Ctrl+Shift+p				|	Show All Commands
-
+```

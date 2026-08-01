@@ -1,3 +1,6 @@
+# Передача файлов по SSH
+
+```
 sudo pacman -S openssh
 
 sudo systemctl start sshd
@@ -10,3 +13,4 @@ scp -r dir_name/ itnova@192.168.5.23:/home/itnova/tmp
 
 # share data with another port
 scp -P 7667 id_rsa.pub itnova@192.168.5.23:/home/itnova/tmp
+```

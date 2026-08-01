@@ -1,3 +1,6 @@
+# SSH: ключи и подключение
+
+```
   # from MyArch
 ssh-keygen -o
 eval $(ssh-agent -s)
@@ -44,6 +47,4 @@ option 2:
 ssh [remote_username]@[server_ip_address] mkdir -p .ssh
 
 cat .ssh/id_rsa.pub | ssh [remote_username]@[server_ip_address] 'cat >> .ssh/authorized_keys'
-
-
-
+```

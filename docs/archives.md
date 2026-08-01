@@ -1,3 +1,6 @@
+# Архивы: tar, zip, gzip
+
+```
 // распаковка в текущую директорию
 unzip archieve.zip
 
@@ -15,5 +18,4 @@ zip <output_file.zip> <input_file1> <input_file2>
 
 // запаковка файлов
 tar -cf filename.tar directory_name/
-
-
+```

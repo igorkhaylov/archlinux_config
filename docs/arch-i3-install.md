@@ -1,0 +1,373 @@
+# Установка Arch Linux + i3
+
+```
+loadkeys us							раскладка клавиатуры
+lsblk								просмотр дерева дисков
+efivar -l
+efibootmgr( посмотрим старые записи, если они есть )
+gdisk(gpt) and fdisk(mbr)( or cfdisk)				программа разметки дисков
+
+iw dev
+iw dev wlan0 scan | grep SSID
+iwctl station list
+iwctl --passphrase "password" station wlan0 connect SSID
+
+
+		UEFI	-----------------------------------------------------------------------
+
+	sda6	-	512mb	efi
+	sda7	-	4g	swap
+	sda8	-	20g	root
+	sda9	-	100g	home
+	sda5	-	wind
+
+	boot	-	512mb	ef00
+	swap	-	4gb	8200
+	root	-	20gb	8304
+	home	-	10gb	0700
+
+mkfs.vfat -F 32 /dev/sda6
+mkfs.ext4 /dev/sda8
+mkfs.btrfs /dev/sdb_vg/volume1
+mkfs.ntfs -Q /dev/sda9
+mkswap /dev/sda7
+swapon /dev/sda7
+mount /dev/sda8 /mnt
+cd /mnt
+{		пока не монтрируем эти пути, загрузчик grub определяет загрузочные файлы по монтируемым файлам, и это мы сделаем позже
+mkdir boot/efi
+mount /dev/sda6 /mnt/boot/efi
+}
+mkdir home
+mount /dev/sda9 /mnt/home
+mkdir home/wind
+mount /dev/sda5 /mnt/home/wind
+vim /etc/pacman.d/mirrorlist		yy	p
+pacstrap -i /mnt base base-devel linux linux-firmware networkmanager vim ntfs-3g usbutils
+genfstab -U /mnt >> /mnt/etc/fstab {{ чтоб были примонтированы только диски /, /home, swap, и только нужное, загрузочный диск нам не нужен, мы его сможем потом вручную примонтировать и отредактировать}}
+arch-chroot /mnt
+echo "hostnamearchlinux" > /etc/hostname
+
+{{ проверяем время командой date, и оно UTC, и если мы поменяем его на localtime, то оно будет с ошибкой: 
+
+UTC - UNIX
+localtime - windows
+
+ln -sf /usr/share/zoneinfo/Asia/Yekaterinburg /etc/localtime
+# hwclock --localtime --adjust		( эту строчку не нужно прописывать, по умолчанию UTC стоит и этого достаточно, время отлично работает )
+}}
+
+timedatectl set-ntp true
+hwclock --systohc				setting up hardware clock from ntp server
+timedatectl set-local-rtc 0			setting up UTC
+timedatectl set-timezone Asia/Yekaterinburg	setting up UTC+5
+
+vim /etc/locale.gen {{раскомментируем локали ru_RU, en_US UTF-8}}
+locale-gen
+echo 'LANG="en_US.UTF-8"' > /etc/locale.conf
+echo 'KEYMAP=us' >> /etc/vconsole.conf
+echo 'FONT=cyr-sun16' >> /etc/vconsole.conf
+mkinitcpio -p linux
+passwd
+pacman -S grub efibootmgr
+mkdir /boot/efi
+mount /dev/sda1 /boot/efi
+grub-install /dev/sdaX {{где X - это номер диска, если оно будет пустым, граб установится на любой доступный диск, в том числе и на загрузчик винды}}
+{		если будут смежные операционные системы
+pacman -S os-prober mtools fuse
+etc-default-grub добавить строчку GRUB_DISABLE_OS_PROBER=false 
+# чтоб добавилась система windows в загрузчик grub. os-prober - показывает системы
+}
+grub-mkconfig -o /boot/grub/grub.cfg {{видит только примонтированные системы}}
+# pacman -S wpa_supplicant 		этот пакет не нужек к установке
+exit
+umount -R /mnt
+reboot
+
+					В итоге ошибка решена после исправления последовательности 
+						монтирования диска загрузчика граб
+
+	login	>>>>	root
+systemctl enable NetworkManager
+systemctl start NetworkManager
+systemctl status NetworkManager
+nmtui 		--	wifi
+useradd -m -g users -G wheel -s /bin/bash <<itnova>>
+sudo /etc/sudoers					раскомментируем группу wheel для доступа к sudo
+
+	установка i3
+pacman -S
+ xorg-server
+ xorg-xev (для определения кода или символа клавиши)
+ xev | grep -A2 --line-buffered '^KeyRelease' | sed -n '/keycode /s/^.*keycode \([0-9]*\).* (.*, \(.*\)).*$/\1 \2/p'
+ xorg-xinit 
+ xorg-xinput 
+ xorg-drivers 
+ xorg-xbacklight
+ xorg-xrandr( arandr )
+ xclip
+ dmenu(rofi)
+ i3(i3-wm, i3-status, i3lock)
+ ttf-dejavu
+ ttf-liberation
+ ttf-font-awesome	(цифровые иконки)
+ rxvt-unicode
+ xf86-input-synaptics
+ curl sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+
+vim ~/.xinitrc		>>	exec i3
+startx				запускаем иксы
+
+ 
+ 
+ 
+	ЗВУК
+
+sudo gpasswd -a itnova audio				# добавляем пользователя в группу с доступом звука
+sudo pacman -S
+ pulseaudio
+ pulseaudio-alsa
+ alsa-utils	# устанавливает псевдооболочку
+ pavucontrol    # графическая оболочка для регулирования громкости динамиков и микрофона
+ alsamixer						# регулируем громкость
+
+	ЯРКОСТЬ ЭКРАНА
+sudo pacman -S xorg-xbacklight
+		xbacklight -set value =10
+		xbacklight -inc value +10
+		xbacklight -dec value -10
+
+	ДВА МОНИТОРА
+exec xrandr --output <<eDP1>> --mode 1366x768 --pos 0x0
+exec xrandr --output <<HDMI1>> --mode 1920x1080 --pox 1366x0
+exec xrandr --output HDMI1 --off
+
+	ОБОИ НА РАБОЧИЙ СТОЛ
+sudo pacman -S nitrogen
+exec --no-startup-id nitrogen (записать в конфиг i3)
+-----------------------------------------------------
+sudo pacman -S feh
+feh --bg-scale ~/Pictures/london.jpg
+
+
+	BLUETOOTH
+sudo pacman -S
+ bluez
+ bluez-utils
+ pulseaudio-bluetooth
+ blueman (графическая утилита, запускается в rofi blueman-applet, после чего в трее появится иконка блютуза)
+	sudo systemctl status bluetooth.service		# проверка статуса
+	sudo systemctl start bluetooth.service		# запуск
+	sudo systemctl enable bluetooth.service		# добавление в автозапуск службы блютуз
+
+	AUR repository
+git clone https://aur.archlinux.org/yay-bin.git
+cd yay-bin
+makepkg -si
+
+# Remove yay for update 
+sudo pacman -R yay
+# Install yay from git
+cd /tmp
+git clone https://aur.archlinux.org/yay-bin.git
+cd yay-bin
+makepkg -si
+cd ..
+# clean /tmp folder
+rm -rf yay-bin
+
+
+
+
+		Установка приложений
+sudo pacman -S
+ sbxkb			(значок языка в трее)
+ volumeicon		(значок громкости в трее)
+dnsutils(для команды nslookup)
+traceroute(тут тоже все понятно)
+arandr(для легкой настройки двух мониторов)
+unzip(по логике вещей это элементарно)
+ark(аналог WinRar)
+evince(Document Viewer PDF)
+telegram-desktop(телеграм)
+firefox(браузер)
+chromium(браузер)
+pcmanfm(файловый менеджер)
+gvfs(для создания корзины для pcmanfm)
+gvfs-smb(для сетевых ресурсов pcmanfm)
+android-file-transfer(открывает файлы со смартфона в pcmanfm) 
+vlc(видео проигрыватель)
+baobab(графический анализатор памяти диска)
+deadbeef(музыкальный проигрыватель)
+audacious(музыкальный проигрыватель)
+gpicview(просмотрщик изображений)
+flameshot(скриншоты) flameshot gui(в терминале, создать скриншот)
+git
+	cat id_rsa.pub | xclip -selection clipboard
+openssh
+	git config --global user.name "igorkhaylov"
+	git config --global(--local) user.email "igorkhaylov@yandex.com"
+	ssh-keygen -o
+	eval $(ssh-agent -s)
+	ssh-add ~/.ssh/id_rsa
+pass(password manager)
+freerdp(протокол для remmina)
+remmina(клиент для rdp)
+leafpad(блокнот с графическим интерфейсом)
+libreoffice-still(стабильная версия)
+xdg-utils (утилита для управления, установка браузера по умолчанию)
+	xdg-settings set default-web-browser firefox.desktop
+
+
+
+
+
+
+# ssh for password-store app IOS
+ssh-keygen -t ecdsa -b 256 -m PEM -f ./secret.key	# ssh gen for iphone
+git@github.com:igorkhaylov/passwordstore.git		# add github url to passwordstore app
+
+username git 						# git
+
+	GPG commands
+gpg --full-generate-key # задаем RSA 4096 - мощный вид шифрования
+gpg --expert --edit-key # key 1 выбираем subkey для изменения, expire - изменение даты,
+gpg --export-secret-subkey -a > secret_sub_key.gpg
+gpg --export-secret-key -a > secret_key.gpg
+gpg --export -a > public_key.gpg.pub
+gpg --import correct_key.gpg...
+gpg --delete-key (or --delete-secret-keys) your_name_key # можно удалить только секретный ключ, в окошке подтверждения не подтверждаем secret subkey
+
+## new version
+gpg --export-secret-subkeys -a KEY_ID! > secret_sub_key.gpg
+gpg --export-secret-keys -a KEY_ID! > secret_key.gpg
+gpg --export -a KEY_ID! > public_key.gpg
+
+
+GNUPG хранит базу данных доверия ~/.gnupg/trustdb.gpg
+Вы можете сделать резервную копию этой базы данных доверия, используя --export-ownertrustопцию:
+gpg --export-ownertrust > file.txt
+Если вы экспортировали свои секретные ключи и импортировали их позже в новую среду, доверенной базы данных больше не будет.
+Тем не менее, это легко исправить:
+gpg --edit-key user@useremail.com
+gpg> trust
+.....
+Your decision? 5
+.....
+gpg> save
+
+PASS
+git clone git@github.com:igorkhaylov/passwordstore.git
+mv passwordstore .password-store
+pass init password-store 	(name of gpg key)	# worked
+
+# pass init password-store/igorkhaylov@yanex.com 	(name/email of gpg key)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+youtube-dl(консольная утилита для скачивания видео из youtube)
+	youtube-dl -r 100K <URL>	(скачивание с ограничением 100Кбайт/сек)
+	youtube-dl -F <URL>		(просмотр всех форматов видео для скачивания)
+	youtube-dl -f 123 <URL>		(скачивание в выбраном качестве)
+	
+https://github.com/yt-dlp/yt-dlp
+	альтернативная программа для скачивания с быстрой скоростью
+	
+
+
+
+
+
+
+
+
+
+
+
+			
+
+
+
+
+
+
+
+
+
+
+
+		BIOS
+
+	boot	-	500mb	83
+	swap	-	2gb	82
+	/	-	##gb	83
+-----	windows/ntfs/exfat	07	----- на всякий случай
+		(в конце разметки ставим "а" программой fdisk)
+
+mkfs.ext2 /dev/sda1 -L boot
+mkswap /dev/sda2 -L swap
+mkfs.ext4 /dev/sda3 -L root
+mkfs.ntfs -Q /dev/sda4 -L d
+
+mount /dev/sda3 /mnt		первым делом создаем корневую точку монтирования
+cd /mnt
+mkdir boot
+mount /dev/sda1 /mnt/boot
+mkdir d
+mount /dev/sda4 /mnt/d
+swapon /dev/sda2
+
+vim /etc/pacman.d/mirrorlist	?yandex
+				yy - копирует строчку
+				p - вставляет
+pacstrap -i /mnt base base-devel linux linux-firmware vim dhcpcd			# ключ -i значит что при установке будет спрашивать список пакетов из общего пакета
+
+		## у меня возникла проблема: "could not open file /mnt/var/lib/pacman/sync/core.db: Unrecognized archive format" и решение удалить папку с файлом rm -R /var/lib/pacman/sync/    and then pacman -Syuf
+
+genfstab -pU /mnt >> /mnt/etc/fstab
+arch-chroot /mnt
+echo "arch-pc" > /etc/hostname	имя компьютера
+ln -sf /usr/share/zoneinfo/Asia/Yekaterinburg /etc/localtime
+hwclock --systohc
+vim /etc/locale.gen	раскомментируем 3 ru-пакета и 2 en-пакета
+locale-gen
+vim /etc/locale.conf 	>> 	LANG="ru_RU.UTF-8"	язык системы
+vim /etc/vconsole.conf	>>	KEYMAP=ru
+				FONT=cyr-sun16 
+pacman-key --init		подписываем каждый репозиторий чтобы хакеры не смогли подменить нам пакеты
+pacman-key --populate archlinux
+pacman -Syu
+mkinitcpio -p linux
+passwd
+pacman -S grub
+grub-install /dev/sda
+pacman -S os-prober mtools fuse		если будет несколько ОС
+grub-mkconfig -o /boot/grub/grub.cfg	обновление конфига
+exit
+reboot
+
+		Установка i3
+useradd -m -g users -G wheel -s /bin/bash itnova
+passwd @somepassword@
+pacman -S xorg-server xorg-drivers xorg-fonts xorg-xinit xterm dmenu i3 ttf-dejavu
+vim /etc/sudoers и расскоментируем один файл, либо под root(цветным шрифтом) вписать нового пользователя для большей безопасности, почти сделать копию
+exit >> itnova >> pass
+sudo vim /etc/sudoers	если откроет файл, то все ок
+vim .xinitrc	>>	exec i3				в директории пользователя
+.Xresources
+startx
+```

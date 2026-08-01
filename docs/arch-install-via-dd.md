@@ -1,6 +1,9 @@
+# Запись образа Arch Linux через dd
+
+```
 umount usb drive
 
 mkfs.fat -F 32 /dev/sdXn
 
 dd bs=4M if=path/to/arhclinux-version-x86_64.iso of=/dev/sdx conv=fsync oflag=direct status=progress
-
+```

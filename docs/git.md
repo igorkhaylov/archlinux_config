@@ -1,3 +1,6 @@
+# Git: полезные команды
+
+```
 If you have NOT pushed your changes to remote
 
 git reset HEAD~1
@@ -9,4 +12,4 @@ git revert HEAD
 1 - Undo commit and keep all files staged:  	git reset --soft HEAD~
 2 - Undo commit and unstage all files: 		git reset HEAD~
 3 - Undo commit and completely remove all changes git reset --hard HEAD~
-
+```

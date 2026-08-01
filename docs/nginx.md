@@ -1,3 +1,6 @@
+# Настройка nginx
+
+```
 Create index.html files
 
 For the next step, create index.html files for each of the domains. Starting with the example1 website, add the following command.
@@ -63,3 +66,4 @@ $ sudo systemctl restart nginx
 Check the web browser & type example1.com to see the index page. Test the same changes, for example2.com domain.
 
 You have configured two virtual hosts on one server using NGINX.
+```

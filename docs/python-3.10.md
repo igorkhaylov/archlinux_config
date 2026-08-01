@@ -1,3 +1,6 @@
+# Установка Python 3.10
+
+```
 # Ubuntu 20.04
 
 The first way to install Python 3.10 on Ubuntu 20.04 is to use the APT repository. First, update your local package index with the following command:
@@ -19,3 +22,4 @@ sudo apt install python3.10
 You can verify your Python 3.10 installation by checking its version:
 
 python3.10 --version
+```
